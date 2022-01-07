@@ -102,5 +102,7 @@ event.belongsTo(company);
 
 //  sequelize.sync({alter:true})
 
+module.exports = worker;
 module.exports = event;
+
 global.sequelize = sequelize;
