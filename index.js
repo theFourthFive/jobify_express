@@ -2,8 +2,8 @@
 var express = require("express");
 var app = express();
 var cors = require("cors");
-const { fromCallback } = require('bluebird');
-
+// const { fromCallback } = require('bluebird');
+var addEvent = require("./routers/addEvent")
 const passport = require("passport");
 
 
@@ -45,7 +45,7 @@ mongoose
       try {
         await sequelize.authenticate();
         whisp(`sequelize is now connected to the remote MySQL database: \n${database.mysql.url} \n`);
-        app.listen(port, () => whisp(`The server is now listening on http://localhost:${port}/`));
+        app.listen(port,"0.0.0.0", () => whisp(`The server is now listening on http://localhost:${port}/`));
         
       } catch (error) {
         yell('Unable to connect to the database:', error);
@@ -76,6 +76,7 @@ app.use((req, res, next) => {
 });
 
 
+
 // setting up the age of the cookie & the key to encrypt the cookie before sending it to the browser
 app.use(
   cookieSession({
@@ -96,7 +97,7 @@ app.get('/', (req, res, next) => {
 // app.use("/auth", auth);
 // app.use("/tools", tools);
 // app.use("/users", users);
-
+app.use("/addEvent",addEvent)
 /**** Middleware that Catch the "Wrong Endpoint" ****/
 // Catch 404 errors and forward them to error handler
 app.use((req, res, next) => {
@@ -107,20 +108,21 @@ app.use((req, res, next) => {
   next(wrongEndpoint);
 });
 
+
 /************** Error handler function **************/
 // Error handler function
-app.use((wrongEndpoint, req, res, next) => {
-  ignore(req, next);
+// app.use((wrongEndpoint, req, res, next) => {
+//   ignore(req, next);
 
-  const error = app.get("env") === "development" ? wrongEndpoint : {};
-  const status = wrongEndpoint.status || 500;
+//   const error = app.get("env") === "development" ? wrongEndpoint : {};
+//   const status = wrongEndpoint.status || 500;
 
-  // respond to client
-  res.status(status).json({
-    error: {
-      message: error.message,
-    },
-  });
-  // Respond to ourselves
-  yell(err);
-});
+//   // respond to client
+//   res.status(status).json({
+//     error: {
+//       message: error.message,
+//     },
+//   });
+//   // Respond to ourselves
+//   yell(err);
+// });

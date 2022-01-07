@@ -1,3 +1,4 @@
+const { Module } = require("module");
 const Sequelize = require("sequelize");
 
 
@@ -75,7 +76,6 @@ var worker = sequelize.define("worker", {
 
 
 
-
 var feedback = sequelize.define("feedback", {
   rate : Sequelize.DataTypes.INTEGER,
   text : Sequelize.DataTypes.STRING
@@ -103,6 +103,8 @@ var accepted_Profile = sequelize.define("accepted_Profile", {
 
 
 
+
+
 ///////////////////////accpted profiles realation ///////////////////
 
 event.belongsToMany(worker , {through : accepted_Profile})
@@ -114,7 +116,6 @@ worker.belongsToMany(event , {through : accepted_Profile})
 
 company.belongsToMany(worker , {through : subscription})
 worker.belongsToMany(company , {through : subscription})
-
 
 ///////////////////////// HIRING OFFER REALATION //////////////////////////////////////////
 hiringOffer.belongsTo(company)
@@ -128,9 +129,11 @@ event.belongsTo(company)
 
 
 
-// sequelize.sync({force:true})
-module.exports =
+//  sequelize.sync({alter:true})
+
 module.exports =worker;
+module.exports =event;
+
 global.sequelize = sequelize ;
 
 

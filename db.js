@@ -122,6 +122,7 @@ hiringOffer.belongsTo(event)
 company.belongsToMany(worker , {through : feedback})
 worker.belongsToMany(company , {through : feedback})
 event.belongsTo(company)
+event.create({eventName:"party"})
 
 worker.create({firstName :"bob" , lastName : "heh" , Email : "sasdasd" , phoneNumber : "222" , imageUrl : "asda" , CVUrl : "asdasd"})
 event.create({eventName:"party",location:"la Marsa" , nbrChef:5 , mbrWaiter:5 , mbrCleaningWorker:5 , duration : 5, dailyPay : 50 , imageUri:"https://bit.ly/33cxLIy"});
