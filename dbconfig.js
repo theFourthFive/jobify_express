@@ -1,20 +1,17 @@
 const Sequelize = require("sequelize");
+const { database } = require("./config/settings");
 
-
-
- sequelize = new Sequelize("jobify", "Amine", "Amine@2022", {
-  host: "141.95.109.28",
+sequelize = new Sequelize(database.mysql.url, {
   dialect: "mysql",
-  operatorsAlias: false
+  operatorsAlias: false,
 });
 
 try {
   await sequelize.authenticate();
-  console.log('Connection has been established successfully.');
+  console.log("Connection has been established successfully.");
 } catch (error) {
-  console.error('Unable to connect to the database:', error);
+  console.error("Unable to connect to the database:", error);
 }
-
 
 // var event = sequelize.define("event", {
 //   eventID: {
@@ -34,7 +31,7 @@ try {
 //   nbWorkers : Sequelize.DataTypes.STRING,
 //   imageUri : Sequelize.DataTypes.STRING,
 //   companyId : Sequelize.DataTypes.STRING
-  
+
 // });
 
 // var company = sequelize.define("company", {
@@ -50,7 +47,7 @@ try {
 //   phoneNumber: Sequelize.DataTypes.INTEGER,
 //   imageUrl: Sequelize.DataTypes.STRING,
 //   passWord : Sequelize.DataTypes.STRING
-  
+
 // });
 
 // var worker = sequelize.define("worker", {
@@ -69,57 +66,38 @@ try {
 //   availibility : Sequelize.DataTypes.STRING,
 //   password : Sequelize.DataTypes.STRING,
 //   avgRating: Sequelize.DataTypes.INTEGER,
-  
+
 // });
-
-
-
-
-
-
-
-
-
 
 // var feedback = sequelize.define("feedback", {
 //   rate : Sequelize.DataTypes.INTEGER,
 //   text : Sequelize.DataTypes.STRING
 // })
 
-
-
 // var hiringOffer = sequelize.define("hiringOffer", {
 //   from_day : Sequelize.DataTypes.DATE,
 //   duration_days : Sequelize.DataTypes.INTEGER,
 //   dailyPayement : Sequelize.DataTypes.INTEGER,
-//   validation : Sequelize.DataTypes.INTEGER 
+//   validation : Sequelize.DataTypes.INTEGER
 // })
 
-
 // var subscription = sequelize.define("subscription", {
-//   validation : Sequelize.DataTypes.INTEGER 
+//   validation : Sequelize.DataTypes.INTEGER
 // })
 
 // var accepted_Profile = sequelize.define("accepted_Profile", {
-//   date : Sequelize.DataTypes.DATE 
+//   date : Sequelize.DataTypes.DATE
 // })
-
-
-
-
 
 // ///////////////////////accpted profiles realation ///////////////////
 
 // event.belongsToMany(worker , {through : accepted_Profile})
 // worker.belongsToMany(event , {through : accepted_Profile})
 
-
-
 // ///////////////////// subscription realation///////////////////////////////////////
 
 // company.belongsToMany(worker , {through : subscription})
 // worker.belongsToMany(company , {through : subscription})
-
 
 // ///////////////////////// HIRING OFFER REALATION //////////////////////////////////////////
 // hiringOffer.belongsTo(company)
@@ -131,11 +109,7 @@ try {
 // worker.belongsToMany(company , {through : feedback})
 // event.belongsTo(company)
 
-
-
 // sequelize.sync({force:true})
 
-module.exports =sequelize;
-global.sequelize = sequelize ;
-
-
+module.exports = sequelize;
+global.sequelize = sequelize;
