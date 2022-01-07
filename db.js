@@ -51,6 +51,7 @@ var worker = sequelize.define("worker", {
     autoIncrement: true,
     primaryKey: true,
   },
+  location : Sequelize.DataTypes.STRING,
   firstName: Sequelize.DataTypes.STRING,
   LastName: Sequelize.DataTypes.STRING,
   Email: Sequelize.DataTypes.STRING,
@@ -123,8 +124,17 @@ worker.belongsToMany(company , {through : feedback})
 event.belongsTo(company)
 event.create({eventName:"party"})
 
+worker.create({firstName :"bob" , lastName : "heh" , Email : "sasdasd" , phoneNumber : "222" , imageUrl : "asda" , CVUrl : "asdasd"})
+event.create({eventName:"party",location:"la Marsa" , nbrChef:5 , mbrWaiter:5 , mbrCleaningWorker:5 , duration : 5, dailyPay : 50 , imageUri:"https://bit.ly/33cxLIy"});
+event.create({eventName:"party",location:"la Marsa" , nbrChef:5 , mbrWaiter:5 , mbrCleaningWorker:5 , duration : 5, dailyPay : 50 , imageUri:"https://bit.ly/3HKVDSQ"});
+event.create({eventName:"party",location:"la Marsa" , nbrChef:5 , mbrWaiter:5 , mbrCleaningWorker:5 , duration : 5, dailyPay : 50 , imageUri:"https://bit.ly/3G5Av9b"});
+event.create({eventName:"birthday",location:"la Marsa" , nbrChef:5 , mbrWaiter:5 , mbrCleaningWorker:5 , duration : 5, dailyPay : 50 , imageUri:"https://bit.ly/3n23tPN"});
+event.create({eventName:"family dinner",location:"la Marsa" , nbrChef:5 , mbrWaiter:5 , mbrCleaningWorker:5 , duration : 5, dailyPay : 50 , imageUri:"https://bit.ly/3F73qbE"});
+event.create({eventName:"party",location:"la Marsa" , nbrChef:5 , mbrWaiter:5 , mbrCleaningWorker:5 , duration : 5, dailyPay : 50 , imageUri:"https://bit.ly/33cxLIy"});
+event.create({eventName:"party",location:"la Marsa" , nbrChef:5 , mbrWaiter:5 , mbrCleaningWorker:5 , duration : 5, dailyPay : 50 , imageUri:"https://bit.ly/33cxLIy"});
 
 sequelize.sync({alter:true})
+
 
 module.exports =sequelize;
 global.sequelize = sequelize ;
