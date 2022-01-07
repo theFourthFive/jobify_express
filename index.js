@@ -3,6 +3,8 @@ var express = require("express");
 var app = express();
 var cors = require("cors");
 
+// const { fromCallback } = require('bluebird');
+var addEvent = require("./routers/addEvent");
 const passport = require("passport");
 
 const cookieSession = require("cookie-session");
@@ -80,6 +82,7 @@ app.get("/", (req, res, next) => {
 // app.use("/auth", auth);
 // app.use("/tools", tools);
 // app.use("/users", users);
+app.use("/addEvent", addEvent);
 
 /**** Middleware that Catch the "Wrong Endpoint" ****/
 // Catch 404 errors and forward them to error handler
@@ -93,18 +96,18 @@ app.use((req, res, next) => {
 
 /************** Error handler function **************/
 // Error handler function
-app.use((wrongEndpoint, req, res, next) => {
-  ignore(req, next);
+// app.use((wrongEndpoint, req, res, next) => {
+//   ignore(req, next);
 
-  const error = app.get("env") === "development" ? wrongEndpoint : {};
-  const status = wrongEndpoint.status || 500;
+//   const error = app.get("env") === "development" ? wrongEndpoint : {};
+//   const status = wrongEndpoint.status || 500;
 
-  // respond to client
-  res.status(status).json({
-    error: {
-      message: error.message,
-    },
-  });
-  // Respond to ourselves
-  yell(err);
-});
+//   // respond to client
+//   res.status(status).json({
+//     error: {
+//       message: error.message,
+//     },
+//   });
+//   // Respond to ourselves
+//   yell(err);
+// });

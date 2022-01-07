@@ -1,3 +1,4 @@
+const { Module } = require("module");
 const Sequelize = require("sequelize");
 const { database } = require("./config/settings");
 
@@ -6,110 +7,100 @@ sequelize = new Sequelize(database.mysql.url, {
   operatorsAlias: false,
 });
 
-try {
-  await sequelize.authenticate();
-  console.log("Connection has been established successfully.");
-} catch (error) {
-  console.error("Unable to connect to the database:", error);
-}
+var event = sequelize.define("event", {
+  eventID: {
+    type: Sequelize.DataTypes.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  eventName: Sequelize.DataTypes.STRING,
+  location: Sequelize.DataTypes.STRING,
+  date_time: Sequelize.DataTypes.STRING,
+  nbrWaiter: Sequelize.DataTypes.STRING,
+  nbrChef: Sequelize.DataTypes.STRING,
+  nbrCleaningWorker: Sequelize.DataTypes.STRING,
+  duration: Sequelize.DataTypes.INTEGER,
+  dailyPay: Sequelize.DataTypes.STRING,
+  nbWorkers: Sequelize.DataTypes.STRING,
+  imageUri: Sequelize.DataTypes.STRING,
+  companyId: Sequelize.DataTypes.STRING,
+});
 
-// var event = sequelize.define("event", {
-//   eventID: {
-//     type: Sequelize.DataTypes.INTEGER,
-//     allowNull: false,
-//     autoIncrement: true,
-//     primaryKey: true,
-//   },
-//   eventName : Sequelize.DataTypes.STRING,
-//   location: Sequelize.DataTypes.STRING,
-//   date_time: Sequelize.DataTypes.STRING,
-//   nbrWaiter: Sequelize.DataTypes.STRING,
-//   nbrChef: Sequelize.DataTypes.STRING,
-//   nbrCleaningWorker: Sequelize.DataTypes.STRING,
-//   duration: Sequelize.DataTypes.INTEGER,
-//   dailyPay: Sequelize.DataTypes.STRING,
-//   nbWorkers : Sequelize.DataTypes.STRING,
-//   imageUri : Sequelize.DataTypes.STRING,
-//   companyId : Sequelize.DataTypes.STRING
+var company = sequelize.define("company", {
+  companyId: {
+    type: Sequelize.DataTypes.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  Bussinessfield: Sequelize.DataTypes.STRING,
+  label: Sequelize.DataTypes.STRING,
+  Email: Sequelize.DataTypes.STRING,
+  phoneNumber: Sequelize.DataTypes.INTEGER,
+  imageUrl: Sequelize.DataTypes.STRING,
+  passWord: Sequelize.DataTypes.STRING,
+});
 
-// });
+var worker = sequelize.define("worker", {
+  workerId: {
+    type: Sequelize.DataTypes.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  firstName: Sequelize.DataTypes.STRING,
+  LastName: Sequelize.DataTypes.STRING,
+  Email: Sequelize.DataTypes.STRING,
+  phoneNumber: Sequelize.DataTypes.INTEGER,
+  imageUrl: Sequelize.DataTypes.STRING,
+  CVUrl: Sequelize.DataTypes.STRING,
+  availibility: Sequelize.DataTypes.STRING,
+  password: Sequelize.DataTypes.STRING,
+  avgRating: Sequelize.DataTypes.INTEGER,
+});
 
-// var company = sequelize.define("company", {
-//   companyId: {
-//     type: Sequelize.DataTypes.INTEGER,
-//     allowNull: false,
-//     autoIncrement: true,
-//     primaryKey: true,
-//   },
-//   Bussinessfield: Sequelize.DataTypes.STRING,
-//   label: Sequelize.DataTypes.STRING,
-//   Email: Sequelize.DataTypes.STRING,
-//   phoneNumber: Sequelize.DataTypes.INTEGER,
-//   imageUrl: Sequelize.DataTypes.STRING,
-//   passWord : Sequelize.DataTypes.STRING
+var feedback = sequelize.define("feedback", {
+  rate: Sequelize.DataTypes.INTEGER,
+  text: Sequelize.DataTypes.STRING,
+});
 
-// });
+var hiringOffer = sequelize.define("hiringOffer", {
+  from_day: Sequelize.DataTypes.DATE,
+  duration_days: Sequelize.DataTypes.INTEGER,
+  dailyPayement: Sequelize.DataTypes.INTEGER,
+  validation: Sequelize.DataTypes.INTEGER,
+});
 
-// var worker = sequelize.define("worker", {
-//   workerId: {
-//     type: Sequelize.DataTypes.INTEGER,
-//     allowNull: false,
-//     autoIncrement: true,
-//     primaryKey: true,
-//   },
-//   firstName: Sequelize.DataTypes.STRING,
-//   LastName: Sequelize.DataTypes.STRING,
-//   Email: Sequelize.DataTypes.STRING,
-//   phoneNumber: Sequelize.DataTypes.INTEGER,
-//   imageUrl: Sequelize.DataTypes.STRING,
-//   CVUrl : Sequelize.DataTypes.STRING,
-//   availibility : Sequelize.DataTypes.STRING,
-//   password : Sequelize.DataTypes.STRING,
-//   avgRating: Sequelize.DataTypes.INTEGER,
+var subscription = sequelize.define("subscription", {
+  validation: Sequelize.DataTypes.INTEGER,
+});
 
-// });
+var accepted_Profile = sequelize.define("accepted_Profile", {
+  date: Sequelize.DataTypes.DATE,
+});
 
-// var feedback = sequelize.define("feedback", {
-//   rate : Sequelize.DataTypes.INTEGER,
-//   text : Sequelize.DataTypes.STRING
-// })
+///////////////////////accpted profiles realation ///////////////////
 
-// var hiringOffer = sequelize.define("hiringOffer", {
-//   from_day : Sequelize.DataTypes.DATE,
-//   duration_days : Sequelize.DataTypes.INTEGER,
-//   dailyPayement : Sequelize.DataTypes.INTEGER,
-//   validation : Sequelize.DataTypes.INTEGER
-// })
+event.belongsToMany(worker, { through: accepted_Profile });
+worker.belongsToMany(event, { through: accepted_Profile });
 
-// var subscription = sequelize.define("subscription", {
-//   validation : Sequelize.DataTypes.INTEGER
-// })
+///////////////////// subscription realation///////////////////////////////////////
 
-// var accepted_Profile = sequelize.define("accepted_Profile", {
-//   date : Sequelize.DataTypes.DATE
-// })
+company.belongsToMany(worker, { through: subscription });
+worker.belongsToMany(company, { through: subscription });
 
-// ///////////////////////accpted profiles realation ///////////////////
+///////////////////////// HIRING OFFER REALATION //////////////////////////////////////////
+hiringOffer.belongsTo(company);
+hiringOffer.belongsTo(worker);
+hiringOffer.belongsTo(event);
 
-// event.belongsToMany(worker , {through : accepted_Profile})
-// worker.belongsToMany(event , {through : accepted_Profile})
+//////////////// feed BACK REALATION ///////////////////////////
+company.belongsToMany(worker, { through: feedback });
+worker.belongsToMany(company, { through: feedback });
+event.belongsTo(company);
 
-// ///////////////////// subscription realation///////////////////////////////////////
+//  sequelize.sync({alter:true})
 
-// company.belongsToMany(worker , {through : subscription})
-// worker.belongsToMany(company , {through : subscription})
-
-// ///////////////////////// HIRING OFFER REALATION //////////////////////////////////////////
-// hiringOffer.belongsTo(company)
-// hiringOffer.belongsTo(worker)
-// hiringOffer.belongsTo(event)
-
-// //////////////// feed BACK REALATION ///////////////////////////
-// company.belongsToMany(worker , {through : feedback})
-// worker.belongsToMany(company , {through : feedback})
-// event.belongsTo(company)
-
-// sequelize.sync({force:true})
-
-module.exports = sequelize;
+module.exports = event;
 global.sequelize = sequelize;

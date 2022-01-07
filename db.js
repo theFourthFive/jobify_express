@@ -98,6 +98,12 @@ hiringOffer.belongsTo(event);
 company.belongsToMany(worker, { through: feedback });
 worker.belongsToMany(company, { through: feedback });
 event.belongsTo(company);
+event.create({ eventName: "party" });
+
+sequelize.sync({ alter: true });
+
+module.exports = sequelize;
+global.sequelize = sequelize;
 
 sequelize.sync({ force: true });
 
