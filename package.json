@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server-dev": "cross-env NODE_ENV=development nodemon index.js",
+    "S": "cross-env NODE_ENV=development nodemon index.js",
     "server-prod": "cross-env NODE_ENV=production nodemon index.js",
     "heroku": " nodemon index.js",
     "db": "node db"

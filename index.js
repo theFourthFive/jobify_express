@@ -2,7 +2,7 @@
 var express = require("express");
 var app = express();
 var cors = require("cors");
-const { fromCallback } = require('bluebird');
+// const { fromCallback } = require('bluebird');
 
 const passport = require("passport");
 
@@ -43,7 +43,7 @@ mongoose
     (async()=>{
       try {
         await sequelize.authenticate();
-        whisp(`Mongoose is now connected to the remote MySQL database: \n${database.mysql.url} \n`);
+        whisp(`sequelize is now connected to the remote MySQL database: \n${database.mysql.url} \n`);
         app.listen(port, () => whisp(`The server is now listening on http://localhost:${port}/`));
         
       } catch (error) {
