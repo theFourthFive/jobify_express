@@ -2,7 +2,7 @@
 var express = require("express");
 var app = express();
 var cors = require("cors");
-const { fromCallback } = require('bluebird');
+// const { fromCallback } = require('bluebird');
 
 const passport = require("passport");
 
@@ -20,18 +20,16 @@ ignore(passportSetup, passport);
 
 /***************** Including Routes *****************/
 
-
 /***** Database connection & Listening Requests *****/
 mongoose.Promise = global.Promise;
 
 const Sequelize = require("sequelize");
 
 // sequelize = new Sequelize("jobify", "Amine", "Amine@2022", {
-  sequelize = new Sequelize(database.mysql.url, {
+sequelize = new Sequelize(database.mysql.url, {
   operatorsAlias: false,
-  logging: database.logging
+  logging: database.logging,
 });
-
 
 // prettier-ignore
 mongoose
@@ -53,13 +51,6 @@ mongoose
   })
   .catch((error) => yell("Error have been encountered while connecting to database", error));
 
-
-
-
-
- 
- 
-
 /******************** Middleware ********************/
 
 app.use(express.json());
@@ -74,7 +65,6 @@ app.use((req, res, next) => {
   next(); // Important
 });
 
-
 // setting up the age of the cookie & the key to encrypt the cookie before sending it to the browser
 app.use(
   cookieSession({
@@ -84,11 +74,10 @@ app.use(
   })
 );
 
-
 /********************** Routes **********************/
-app.get('/', (req, res, next) => {
-  res.send("hello from express")
-})
+app.get("/", (req, res, next) => {
+  res.send("hello from express");
+});
 // app.use("/auth", auth);
 // app.use("/tools", tools);
 // app.use("/users", users);
