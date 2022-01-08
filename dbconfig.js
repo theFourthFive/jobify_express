@@ -131,8 +131,7 @@ event.belongsTo(company)
 
 //  sequelize.sync({alter:true})
 
-module.exports =worker;
-module.exports =event;
+module.exports ={event,worker,subscription , company , sequelize}
 
 global.sequelize = sequelize ;
 

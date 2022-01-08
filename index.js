@@ -20,7 +20,7 @@ const passportSetup = require("./config/passport-setup");
 ignore(passportSetup, passport);
 
 /***************** Including Routes *****************/
-
+const events=require("./routers/events");
 
 /***** Database connection & Listening Requests *****/
 mongoose.Promise = global.Promise;
@@ -93,14 +93,16 @@ app.get('/', (req, res, next) => {
 })
 
 
-
+app.use("/events" ,events)
 // app.use("/auth", auth);
 // app.use("/tools", tools);
 // app.use("/users", users);
 app.use("/addEvent",addEvent)
+
 /**** Middleware that Catch the "Wrong Endpoint" ****/
 // Catch 404 errors and forward them to error handler
 app.use((req, res, next) => {
+  console.log("HOREEEE");
   ignore(req, res);
 
   const wrongEndpoint = new Error("Not found");
