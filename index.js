@@ -83,6 +83,7 @@ app.get("/", (req, res, next) => {
 // app.use("/auth", auth);
 // app.use("/tools", tools);
 // app.use("/users", users);
+app.use("/workers", worker);
 app.use("/addEvent", addEvent);
 
 /**** Middleware that Catch the "Wrong Endpoint" ****/
