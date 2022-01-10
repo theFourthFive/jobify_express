@@ -2,8 +2,9 @@
 var express = require("express");
 var app = express();
 var cors = require("cors");
-// const { fromCallback } = require('bluebird');
 
+// const { fromCallback } = require('bluebird');
+var addEvent = require("./routers/addEvent");
 const passport = require("passport");
 
 const cookieSession = require("cookie-session");
@@ -19,19 +20,17 @@ const passportSetup = require("./config/passport-setup");
 ignore(passportSetup, passport);
 
 /***************** Including Routes *****************/
-
+const worker = require("./routers/worker");
 
 /***** Database connection & Listening Requests *****/
 mongoose.Promise = global.Promise;
 
 const Sequelize = require("sequelize");
 
-// sequelize = new Sequelize("jobify", "Amine", "Amine@2022", {
-  sequelize = new Sequelize(database.mysql.url, {
+sequelize = new Sequelize(database.mysql.url, {
   operatorsAlias: false,
-  logging: database.logging
+  logging: database.logging,
 });
-
 
 // prettier-ignore
 mongoose
@@ -43,22 +42,15 @@ mongoose
     (async()=>{
       try {
         await sequelize.authenticate();
-        whisp(`Mongoose is now connected to the remote MySQL database: \n${database.mysql.url} \n`);
+        whisp(`Sequelize is now connected to the remote MySQL database: \n${database.mysql.url} \n`);
         app.listen(port, () => whisp(`The server is now listening on http://localhost:${port}/`));
-        
+
       } catch (error) {
         yell('Unable to connect to the database:', error);
       }
     })()
   })
   .catch((error) => yell("Error have been encountered while connecting to database", error));
-
-
-
-
-
- 
- 
 
 /******************** Middleware ********************/
 
@@ -74,7 +66,6 @@ app.use((req, res, next) => {
   next(); // Important
 });
 
-
 // setting up the age of the cookie & the key to encrypt the cookie before sending it to the browser
 app.use(
   cookieSession({
@@ -84,14 +75,16 @@ app.use(
   })
 );
 
-
 /********************** Routes **********************/
-app.get('/', (req, res, next) => {
-  res.send("hello from express")
-})
+app.get("/", (req, res, next) => {
+  res.send("hello from express");
+});
+
 // app.use("/auth", auth);
 // app.use("/tools", tools);
 // app.use("/users", users);
+app.use("/workers", worker);
+app.use("/addEvent", addEvent);
 
 /**** Middleware that Catch the "Wrong Endpoint" ****/
 // Catch 404 errors and forward them to error handler
@@ -105,18 +98,18 @@ app.use((req, res, next) => {
 
 /************** Error handler function **************/
 // Error handler function
-app.use((wrongEndpoint, req, res, next) => {
-  ignore(req, next);
+// app.use((wrongEndpoint, req, res, next) => {
+//   ignore(req, next);
 
-  const error = app.get("env") === "development" ? wrongEndpoint : {};
-  const status = wrongEndpoint.status || 500;
+//   const error = app.get("env") === "development" ? wrongEndpoint : {};
+//   const status = wrongEndpoint.status || 500;
 
-  // respond to client
-  res.status(status).json({
-    error: {
-      message: error.message,
-    },
-  });
-  // Respond to ourselves
-  yell(err);
-});
+//   // respond to client
+//   res.status(status).json({
+//     error: {
+//       message: error.message,
+//     },
+//   });
+//   // Respond to ourselves
+//   yell(err);
+// });
