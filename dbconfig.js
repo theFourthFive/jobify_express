@@ -102,6 +102,88 @@ event.belongsTo(company);
 
 //  sequelize.sync({alter:true})
 
+
+
+//  worker.create({
+//   firstName: "amine",
+//   lastName: "jelassi",
+//   Email: "aminejelassi95@gmail.com",
+//   phoneNumber:20669058,
+//   imageUrl: "https://bit.ly/3FcccFj",
+//   CVUrl: "",
+// });
+// event.create({
+//   eventName: "party",
+//   location: "la Marsa",
+//   nbrChef: 5,
+//   mbrWaiter: 5,
+//   mbrCleaningWorker: 5,
+//   duration: 5,
+//   dailyPay: 50,
+//   imageUri: "https://bit.ly/33cxLIy",
+// });
+// event.create({
+//   eventName: "party",
+//   location: "la Marsa",
+//   nbrChef: 5,
+//   mbrWaiter: 5,
+//   mbrCleaningWorker: 5,
+//   duration: 5,
+//   dailyPay: 50,
+//   imageUri: "https://bit.ly/3HKVDSQ",
+// });
+// event.create({
+//   eventName: "party",
+//   location: "la Marsa",
+//   nbrChef: 5,
+//   mbrWaiter: 5,
+//   mbrCleaningWorker: 5,
+//   duration: 5,
+//   dailyPay: 50,
+//   imageUri: "https://bit.ly/3G5Av9b",
+// });
+// event.create({
+//   eventName: "birthday",
+//   location: "la Marsa",
+//   nbrChef: 5,
+//   mbrWaiter: 5,
+//   mbrCleaningWorker: 5,
+//   duration: 5,
+//   dailyPay: 50,
+//   imageUri: "https://bit.ly/3n23tPN",
+// });
+// event.create({
+//   eventName: "family dinner",
+//   location: "la Marsa",
+//   nbrChef: 5,
+//   mbrWaiter: 5,
+//   mbrCleaningWorker: 5,
+//   duration: 5,
+//   dailyPay: 50,
+//   imageUri: "https://bit.ly/3F73qbE",
+// });
+// event.create({
+//   eventName: "party",
+//   location: "la Marsa",
+//   nbrChef: 5,
+//   mbrWaiter: 5,
+//   mbrCleaningWorker: 5,
+//   duration: 5,
+//   dailyPay: 50,
+//   imageUri: "https://bit.ly/33cxLIy",
+// });
+// event.create({
+//   eventName: "party",
+//   location: "la Marsa",
+//   nbrChef: 5,
+//   mbrWaiter: 5,
+//   mbrCleaningWorker: 5,
+//   duration: 5,
+//   dailyPay: 50,
+//   imageUri: "https://bit.ly/33cxLIy",
+// });
+
+
 module.exports ={event,worker,subscription , company , sequelize}
 
 global.sequelize = sequelize ;

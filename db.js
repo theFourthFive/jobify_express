@@ -102,12 +102,12 @@ event.belongsTo(company);
 event.create({ eventName: "party" });
 
 worker.create({
-  firstName: "bob",
-  lastName: "heh",
-  Email: "sasdasd",
-  phoneNumber: "222",
-  imageUrl: "asda",
-  CVUrl: "asdasd",
+  firstName: "amine",
+  lastName: "jelassi",
+  Email: "aminejelassi95@gmail.com",
+  phoneNumber:20669058,
+  imageUrl: "https://bit.ly/3FcccFj",
+  CVUrl: "",
 });
 event.create({
   eventName: "party",
@@ -182,10 +182,8 @@ event.create({
 
 sequelize.sync({ alter: true });
 
-module.exports = sequelize;
-global.sequelize = sequelize;
 
-sequelize.sync({ force: true });
+
 
 module.exports = sequelize;
 global.sequelize = sequelize;
