@@ -19,7 +19,7 @@ const passportSetup = require("./config/passport-setup");
 ignore(passportSetup, passport);
 
 /***************** Including Routes *****************/
-
+const events=require("./routers/events");
 var worker = require("./routers/worker")
 var company = require("./routers/company")
 var nodemailer = require('./routers/nodemailer')
@@ -79,15 +79,16 @@ app.use(
 );
 
 /********************** Routes **********************/
-app.get("/", (req, res, next) => {
-  res.send("hello from express");
-});
+app.get('/', (req, res, next) => {
+  res.send("hello from express")
+})
 
+app.use("/workers", worker);
+app.use("/events" ,events)
 // app.use("/auth", auth);
 // app.use("/tools", tools);
 // app.use("/users", users);
-app.use("/workers", worker);
-app.use("/addEvent", addEvent);
+app.use("/addEvent",addEvent)
 
 app.use('/nodemailer',nodemailer)
 app.use('/company',company)
@@ -95,6 +96,7 @@ app.use('/company',company)
 /**** Middleware that Catch the "Wrong Endpoint" ****/
 // Catch 404 errors and forward them to error handler
 app.use((req, res, next) => {
+  console.log("HOREEEE");
   ignore(req, res);
 
   const wrongEndpoint = new Error("Not found");
