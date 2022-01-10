@@ -3,7 +3,6 @@ var express = require("express");
 var app = express();
 var cors = require("cors");
 
-// const { fromCallback } = require('bluebird');
 var addEvent = require("./routers/addEvent");
 const passport = require("passport");
 
@@ -20,7 +19,11 @@ const passportSetup = require("./config/passport-setup");
 ignore(passportSetup, passport);
 
 /***************** Including Routes *****************/
-const worker = require("./routers/worker");
+
+var worker = require("./routers/worker")
+var company = require("./routers/company")
+var nodemailer = require('./routers/nodemailer')
+
 
 /***** Database connection & Listening Requests *****/
 mongoose.Promise = global.Promise;
@@ -85,6 +88,9 @@ app.get("/", (req, res, next) => {
 // app.use("/users", users);
 app.use("/workers", worker);
 app.use("/addEvent", addEvent);
+
+app.use('/nodemailer',nodemailer)
+app.use('/company',company)
 
 /**** Middleware that Catch the "Wrong Endpoint" ****/
 // Catch 404 errors and forward them to error handler

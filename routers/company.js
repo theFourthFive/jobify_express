@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 // var db = require("../dbconfig.js")
 var worker = require('../dbconfig.js')
-router.route("/worker")
+router.route("/company")
 
 // localhost:3000/worker/signup/
 
@@ -17,8 +17,8 @@ router.post("/signup",(req,res)=>{
             // console.log(result.length)
         }else{
             console.log("/////////////",req.body)
-            bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-            worker.create({ firstName:req.body.firstName, LastName:req.body.LastName, Email:req.body.Email, password: hash, phoneNumber:req.body.phoneNumber },(err,data)=>{
+            bcrypt.hash(req.body.passWord, saltRounds, function(err, hash) {
+            worker.create({ Bussinessfield:req.body.Bussinessfield, label:req.body.label, Email:req.body.Email, passWord: hash, phoneNumber:req.body.phoneNumber },(err,data)=>{
                 if(err){
                     console.log(err)
                 }else{
@@ -37,8 +37,8 @@ router.post("/login",(req,res)=>{
             console.log(ok)
         }else{
             // console.log(result)
-            bcrypt.compare(req.body.password, ok.dataValues.password, function(err, response) {
-                console.log(ok.dataValues.password)
+            bcrypt.compare(req.body.passWord, ok.dataValues.passWord, function(err, response) {
+                console.log(ok.dataValues.passWord)
                 if(err){
                     console.log(err)
                     console.log("password is wrong")
@@ -51,12 +51,5 @@ router.post("/login",(req,res)=>{
     })
 })
 
-const WorkerController = require("../controllers/worker");
-
-router.put("/:workerId/availability", WorkerController.setAvailability);
-
 
 module.exports = router
-
-
-

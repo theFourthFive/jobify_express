@@ -14,7 +14,7 @@ var event = sequelize.define("event", {
     autoIncrement: true,
     primaryKey: true,
   },
-  eventName: Sequelize.DataTypes.STRING,
+  eventName : Sequelize.DataTypes.STRING,
   location: Sequelize.DataTypes.STRING,
   date_time: Sequelize.DataTypes.STRING,
   nbrWaiter: Sequelize.DataTypes.STRING,
