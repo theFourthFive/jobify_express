@@ -51,5 +51,12 @@ router.post("/login",(req,res)=>{
     })
 })
 
+const WorkerController = require("../controllers/worker");
+
+router.put("/:workerId/availability", WorkerController.setAvailability);
+
 
 module.exports = router
+
+
+
