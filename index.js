@@ -2,7 +2,7 @@
 var express = require("express");
 var app = express();
 var cors = require("cors");
-const { fromCallback } = require('bluebird');
+// const { fromCallback } = require('bluebird');
 
 const passport = require("passport");
 
@@ -20,6 +20,10 @@ ignore(passportSetup, passport);
 
 /***************** Including Routes *****************/
 
+var worker = require("../jobify_express/routers/worker.js")
+var company = require("../jobify_express/routers/company.js")
+var nodemailer = require('../jobify_express/routers/nodemailer.js')
+
 
 /***** Database connection & Listening Requests *****/
 mongoose.Promise = global.Promise;
@@ -28,13 +32,12 @@ const Sequelize = require("sequelize");
 
 // sequelize = new Sequelize("jobify", "Amine", "Amine@2022", {
   sequelize = new Sequelize(database.mysql.url, {
-  operatorsAlias: false,
-  logging: database.logging
-});
-
-
-// prettier-ignore
-mongoose
+    operatorsAlias: false,
+    logging: database.logging
+  });
+  
+  // prettier-ignore
+  mongoose
   .connect(database.mongodb.url)
   .then((result) => {
     ignore(result)
@@ -52,47 +55,51 @@ mongoose
     })()
   })
   .catch((error) => yell("Error have been encountered while connecting to database", error));
-
-
-
-
-
- 
- 
-
-/******************** Middleware ********************/
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-
-app.use((req, res, next) => {
-  ignore(req);
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET , PUT , POST , DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type, x-requested-with");
-  next(); // Important
-});
-
-
-// setting up the age of the cookie & the key to encrypt the cookie before sending it to the browser
+  
+  
+  
+  
+  
+  
+  
+  
+  /******************** Middleware ********************/
+  
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(cors());
+  
+  app.use((req, res, next) => {
+    ignore(req);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET , PUT , POST , DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, x-requested-with");
+    next(); // Important
+  });
+  
+  
+  // setting up the age of the cookie & the key to encrypt the cookie before sending it to the browser
 app.use(
   cookieSession({
     // maxAge: 24 * 60 * 60 * 1000, // day in milliseconds
     maxAge: 10 * 1000, // 10 seconds in milliseconds
     keys: [keys.session.cookieKey],
   })
-);
-
-
-/********************** Routes **********************/
-app.get('/', (req, res, next) => {
-  res.send("hello from express")
-})
-// app.use("/auth", auth);
-// app.use("/tools", tools);
-// app.use("/users", users);
-
+  );
+  
+  
+  /********************** Routes **********************/
+  app.get('/', (req, res, next) => {
+    res.send("hello from express")
+  })
+  
+  app.use('/worker',worker)
+  app.use('/nodemailer',nodemailer)
+  app.use('/company',company)
+  // app.use("/auth", auth);
+  // app.use("/tools", tools);
+  // app.use("/users", users);
+  
 /**** Middleware that Catch the "Wrong Endpoint" ****/
 // Catch 404 errors and forward them to error handler
 app.use((req, res, next) => {
