@@ -5,7 +5,7 @@ var {subscription}  = require("../dbconfig")
 var {company , subscription ,worker , sequelize}  = require("../dbconfig")
 
 
-//  /events/getall
+//  /events/getall..
 router.get("/",async(req,res)=>{
  const events = await event.findAll({})
  res.send(events)
