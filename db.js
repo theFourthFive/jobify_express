@@ -185,7 +185,7 @@ sequelize.sync({ alter: true });
 module.exports = sequelize;
 global.sequelize = sequelize;
 
-sequelize.sync({ force: true });
+// sequelize.sync({ force: true });
 
 module.exports = sequelize;
 global.sequelize = sequelize;
