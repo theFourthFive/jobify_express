@@ -12,6 +12,7 @@ router.get("/",async(req,res)=>{
         
 })
 .post("/subscribe" , async(req,res)=>{
+ console.log("hello")
    event.destroy({where:{eventID : req.body.eventID}})
 })
 module.exports = router
