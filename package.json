@@ -9,7 +9,7 @@
     "S": "cross-env NODE_ENV=development nodemon index.js",
     "server-prod": "cross-env NODE_ENV=production nodemon index.js",
     "heroku": " nodemon index.js",
-    "db-vps": "cross-env NODE_ENV=development nodemon db.js",
+    "db-vps": "cross-env NODE_ENV=development node db.js",
     "db-localhost": "node db.js"
   },
   "keywords": [],

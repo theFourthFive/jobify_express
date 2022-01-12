@@ -11,9 +11,8 @@ router.route("/worker")
 router.post("/signup",(req,res)=>{
     worker.findOne({ where: {Email: req.body.Email} }).then(result =>{
         if(result){
-            res.json('user exists')
-            console.log('user exists')
-            console.log('..............................',result)
+            res.send('user exists')
+
             // console.log(result.length)
         }else{
             console.log("/////////////",req.body)
@@ -62,6 +61,12 @@ router.get("/profile/:id" , async(req,res)=>{
 })
 router.put("/:workerId/availability", WorkerController.setAvailability);
 
+router.get("/" , async(req,res)=>{
+
+    const workers = await worker.findAll({})
+    res.send(workers)
+
+})
 
 module.exports = router
 
