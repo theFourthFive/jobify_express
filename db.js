@@ -80,25 +80,25 @@ var worker = sequelize.define("worker", {
   avgRating: Sequelize.DataTypes.INTEGER,
 });
 
-// var feedback = sequelize.define("feedback", {
-//   rate : Sequelize.DataTypes.INTEGER,
-//   text : Sequelize.DataTypes.STRING
-// })
+var feedback = sequelize.define("feedback", {
+  rate: Sequelize.DataTypes.INTEGER,
+  text: Sequelize.DataTypes.STRING,
+});
 
-// var hiringOffer = sequelize.define("hiringOffer", {
-//   from_day : Sequelize.DataTypes.DATE,
-//   duration_days : Sequelize.DataTypes.INTEGER,
-//   dailyPayement : Sequelize.DataTypes.INTEGER,
-//   validation : Sequelize.DataTypes.INTEGER
-// })
+var hiringOffer = sequelize.define("hiringOffer", {
+  from_day: Sequelize.DataTypes.DATE,
+  duration_days: Sequelize.DataTypes.INTEGER,
+  dailyPayement: Sequelize.DataTypes.INTEGER,
+  validation: Sequelize.DataTypes.INTEGER,
+});
 
-// var subscription = sequelize.define("subscription", {
-//   validation : Sequelize.DataTypes.INTEGER
-// })
+var subscription = sequelize.define("subscription", {
+  validation: Sequelize.DataTypes.INTEGER,
+});
 
-// var accepted_Profile = sequelize.define("accepted_Profile", {
-//   date : Sequelize.DataTypes.DATE
-// })
+var accepted_Profile = sequelize.define("accepted_Profile", {
+  date: Sequelize.DataTypes.DATE,
+});
 
 var feedback = sequelize.define("feedback", {
   rate: Sequelize.DataTypes.INTEGER,
@@ -122,26 +122,26 @@ var accepted_Profile = sequelize.define("accepted_Profile", {
 
 // ///////////////////////accpted profiles realation ///////////////////
 
-// event.belongsToMany(worker , {through : accepted_Profile})
-// worker.belongsToMany(event , {through : accepted_Profile})
+event.belongsToMany(worker, { through: accepted_Profile });
+worker.belongsToMany(event, { through: accepted_Profile });
 
 event.belongsToMany(worker, { through: accepted_Profile });
 worker.belongsToMany(event, { through: accepted_Profile });
 
 // ///////////////////// subscription realation///////////////////////////////////////
 
-// company.belongsToMany(worker , {through : subscription})
-// worker.belongsToMany(company , {through : subscription})
+company.belongsToMany(worker, { through: subscription });
+worker.belongsToMany(company, { through: subscription });
 
 // ///////////////////////// HIRING OFFER REALATION //////////////////////////////////////////
-// hiringOffer.belongsTo(company)
-// hiringOffer.belongsTo(worker)
-// hiringOffer.belongsTo(event)
+hiringOffer.belongsTo(company);
+hiringOffer.belongsTo(worker);
+hiringOffer.belongsTo(event);
 
 // //////////////// feed BACK REALATION ///////////////////////////
-// company.belongsToMany(worker , {through : feedback})
-// worker.belongsToMany(company , {through : feedback})
-// event.belongsTo(company)
+company.belongsToMany(worker, { through: feedback });
+worker.belongsToMany(company, { through: feedback });
+event.belongsTo(company);
 
 sequelize.sync({ alter: true });
 worker.create({
@@ -253,6 +253,3 @@ event.create({
 sequelize.sync({ alter: true });
 
 // sequelize.sync({ force: true });
-
-module.exports = sequelize;
-global.sequelize = sequelize;

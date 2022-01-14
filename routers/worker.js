@@ -21,7 +21,6 @@ router.post("/signup", async (req, res) => {
   } catch (err) {}
 });
 router.post("/login", async (req, res) => {
-   
   try {
     const authworker = req.body;
     authworker.Email = authworker.Email.toLowerCase();
