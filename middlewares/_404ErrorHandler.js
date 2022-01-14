@@ -20,6 +20,6 @@ module.exports = {
     // respond to client
     res.status(status).json({ error: { message: error.message } });
     // Respond to ourselves
-    yell(err);
+    yell(wrongEndpoint);
   },
 };

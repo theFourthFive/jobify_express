@@ -3,25 +3,25 @@ const passport = require("passport");
 
 const AuthController = require("../controllers/auth");
 
-// http://localhost:9000/auth/login
+// http://localhost:3000/auth/login
 router.post("/login", AuthController.signin);
 
-// http://localhost:5000/auth/signup
+// http://localhost:3000/auth/signup
 router.post("/signup", AuthController.signup);
 
-// http://localhost:9000/auth/logout
+// http://localhost:3000/auth/logout
 router.post("/logout", AuthController.logout);
 
-// http://localhost:9000/auth/changepassword
+// http://localhost:3000/auth/changepassword
 router.post("/changepassword", AuthController.changePassword);
 
-// http://localhost:9000/auth/forgotpassword/:hash_link
+// http://localhost:3000/auth/forgotpassword/:hash_link
 router.get("/forgotpassword/:hash_link", AuthController.getResetPassword_UI);
 
-// http://localhost:9000/auth/forgotpassword/
+// http://localhost:3000/auth/forgotpassword/
 router.post("/forgotpassword/", AuthController.forgotPassword);
 
-// http://localhost:9000/auth/resetpassword/
+// http://localhost:3000/auth/resetpassword/
 router.post("/resetpassword/", AuthController.executeResetPassword);
 
 // auth with google

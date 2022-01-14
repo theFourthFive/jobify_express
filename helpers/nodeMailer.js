@@ -15,12 +15,20 @@ const { _SERVER_EMAIL, _SERVER_PASSWORD, _TESTER_EMAIL, _DOMAIN_NAME, _HOST_NAME
 const realURL = require("../config/settings").server.url;
 
 /****************************************** Template Initializer ******************************************
- * init_HOST_NAME: ....
- * init_DOMAIN_NAME: 
- * initUserEmail:
+ * _HOST_NAME: 'Super Website', only the name of the website
+ * _DOMAIN_NAME: 'SuperWebsite.com', only the domain, without the http://
  *
- * _DOMAIN_NAME: 'superWebsite.com' (only the domain, without the http://)
- * _HOST_NAME: 'Super Website' (only the name of the website)
+ * init_HOST_NAME: example : "Super Website"
+ * init_DOMAIN_NAME: example: "superWebsite.com"
+ * initUserEmail: if it's not provided from the front-end, it will take the email address of the tester
+ *
+ * Note: The tester will be the tester user who will receive an email test from the nodeMailer
+ *
+ * initSubject: it describe the Object of the email
+ * initText: the content of the email, but with pure text format
+ * initHTML: the content of the email, but with HTML format
+ * initMail: it initialize the Subject, and the content of the email, with Text and HTML format
+ * initMailTransporter: it specify which service to use (ex: 'gmail'), and specify the login & the password
 /**********************************************************************************************************/
 
 // prettier-ignore
@@ -113,10 +121,6 @@ const initHTML = ({htmlFormat, fullName, websiteName, websiteURL, hash_link}, te
   if(template === "userbanned"){
     ignore()
   }
-
-  if(template === "itembanned"){
-    ignore()
-  }
 };
 
 // prettier-ignore
@@ -130,19 +134,20 @@ const initMail = (params, template) => {
   };
 };
 
-const initGmailTransporter = (user, pass) => ({
-  service: "gmail",
+const initMailTransporter = (user, pass, service) => ({
+  service,
   auth: { user, pass },
 });
 
 // prettier-ignore
 module.exports = {
   gMailer: async (params, template) => {
+    whisp("mailerParams (inside ): ",params)
     // let params = { websiteName, subject, textFormat, htmlFormat, fullName, websiteURL, hash_link };
     const newMail = initMail(params, template);
 
     // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport(initGmailTransporter(_SERVER_EMAIL, _SERVER_PASSWORD));
+    let transporter = nodemailer.createTransport(initMailTransporter(_SERVER_EMAIL, _SERVER_PASSWORD, "gmail"));
 
     try {
       // send mail with defined transport object
