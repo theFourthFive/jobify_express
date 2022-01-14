@@ -14,7 +14,7 @@ var event = sequelize.define("event", {
     autoIncrement: true,
     primaryKey: true,
   },
-  eventName : Sequelize.DataTypes.STRING,
+  eventName: Sequelize.DataTypes.STRING,
   location: Sequelize.DataTypes.STRING,
   date_time: Sequelize.DataTypes.STRING,
   nbrWaiter: Sequelize.DataTypes.STRING,
@@ -39,7 +39,7 @@ var company = sequelize.define("company", {
   Email: Sequelize.DataTypes.STRING,
   phoneNumber: Sequelize.DataTypes.INTEGER,
   imageUrl: Sequelize.DataTypes.STRING,
-  passWord: Sequelize.DataTypes.STRING,
+  password: Sequelize.DataTypes.STRING,
 });
 
 var worker = sequelize.define("worker", {
@@ -101,8 +101,6 @@ worker.belongsToMany(company, { through: feedback });
 event.belongsTo(company);
 
 //  sequelize.sync({alter:true})
-
-
 
 //  worker.create({
 //   firstName: "amine",
@@ -183,10 +181,8 @@ event.belongsTo(company);
 //   imageUri: "https://bit.ly/33cxLIy",
 // });
 
+module.exports = { event, worker, subscription, company, sequelize };
 
-module.exports ={event,worker,subscription , company , sequelize}
-
-global.sequelize = sequelize ;
-
+global.sequelize = sequelize;
 
 global.sequelize = sequelize;
