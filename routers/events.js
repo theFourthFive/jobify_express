@@ -13,13 +13,20 @@ router.get("/",async(req,res)=>{
 })
 
 router.get("/worker/:id", async(req,res)=>{
- console.log(req.params);
- var x = subscription.create()
- console.log(subs);
- res.send(subs)
+ const id = req.params.id;
+try {
+ const notSubscribedEvents = await sequelize.query(`SELECT * from events e , companies c WHERE c.companyId=e.companyCompanyId AND e.eventID NOT in (SELECT e.eventID   
+   FROM workers  w , events e , subscriptions s
+   WHERE w.workerId = s.workerWorkerId AND s.eventEventID = e.eventID AND w.workerId = ${id} );`)
+ res.send(notSubscribedEvents);
+}
+catch (err){
+
+}
 })
 
+
 .post("/subscribe" , async(req,res)=>{
-   event.destroy({where:{eventID : req.body.eventID}})
+   console.log("helloo");
 })
 module.exports = router
