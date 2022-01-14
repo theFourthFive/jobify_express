@@ -88,12 +88,12 @@ app.get("/", (req, res, next) => {
 app.use("/auth", auth);
 app.use("/workers", workers);
 app.use("/companies", companies);
-app.use("/events", events);
+app.use("/events", events); // good !
 
-app.use("/addEvent", addEvent);
+app.use("/addEvent", addEvent); // ???
 
-app.use("/nodemailer", nodemailer);
-app.use("/company", company);
+app.use("/nodemailer", nodemailer); // ???
+app.use("/company", company); // ???
 
 /****************************** Middleware that Catch the "Wrong Endpoint" ******************************/
 // Catch 404 errors and forward them to error handler

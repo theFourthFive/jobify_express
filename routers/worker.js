@@ -20,6 +20,8 @@ router.post("/signup", async (req, res) => {
     res.send("success");
   } catch (err) {}
 });
+
+// localhost:3000/worker/signup/
 router.post("/login", async (req, res) => {
   try {
     const authworker = req.body;
@@ -55,17 +57,16 @@ const WorkerController = require("../controllers/worker");
 var { company, subscription, worker, sequelize } = require("../dbconfig");
 // const { , checkUser } = require("../middleware/auth");
 
+// http://localhost:3000/worker/${userId}/availability
 router.get("/profile/:id", async (req, res) => {
   const profile = await worker.findOne({ where: { workerId: req.params.id } });
   res.send(profile);
 });
+router.put("/:workerId/availability", WorkerController.setAvailability);
 
 router.get("/", async (req, res) => {
   const workers = await worker.findAll({});
   res.send(workers);
 });
-
-// http://localhost:3000/worker/${userId}/availability
-router.put("/:workerId/availability", WorkerController.setAvailability);
 
 module.exports = router;
