@@ -20,8 +20,9 @@ router.post("/signup", async (req, res) => {
     res.send("success");
   } catch (err) {}
 });
+
+// localhost:3000/worker/signup/
 router.post("/login", async (req, res) => {
-   
   try {
     const authworker = req.body;
     authworker.Email = authworker.Email.toLowerCase();

@@ -29,7 +29,7 @@ if (environment !== "production") {
   logger = false;
 }
 
-mongo_url =
+const mongo_url =
   (process.env.MONGO_PROTOCOL ? process.env.MONGO_PROTOCOL : "mongodb://") +
   (process.env.MONGO_USERNAME ? `${process.env.MONGO_USERNAME}:` : "") +
   (process.env.MONGO_PASSWORD ? `${process.env.MONGO_PASSWORD}` : "") +
@@ -38,7 +38,7 @@ mongo_url =
     : "localhost/") +
   (process.env.MONGO_DATABASE_NAME ? process.env.MONGO_DATABASE_NAME : "test");
 
-mysql_url =
+const mysql_url =
   (process.env.MYSQL_PROTOCOL ? process.env.MYSQL_PROTOCOL : "mysql://") +
   (process.env.MYSQL_USERNAME ? `${process.env.MYSQL_USERNAME}:` : "") +
   (process.env.MYSQL_PASSWORD ? `${process.env.MYSQL_PASSWORD}` : "") +
@@ -47,9 +47,21 @@ mysql_url =
     : "localhost/") +
   (process.env.MYSQL_DATABASE_NAME ? process.env.MYSQL_DATABASE_NAME : "test");
 
+const serverProtocol = process.env._SERVER_PROTOCOL_ || "http://";
+const hostname_ip = require("./ipAddress") || "localhost";
+const serverPort = process.env._SERVER_PORT_NUMBER_ || process.env.PORT || 3000;
+
+// prettier-ignore
+const server_url = `${serverProtocol}${hostname_ip}${serverPort ? ":" : ""}${serverPort}`;
+
 module.exports = {
-  port: process.env._SERVER_PORT_NUMBER_ || process.env.PORT,
-  environment,
+  server: {
+    protocol: serverProtocol,
+    hostname_ip: hostname_ip,
+    port: serverPort,
+    environment,
+    url: server_url,
+  },
   database: {
     mongodb: {
       url: mongo_url,
@@ -79,6 +91,9 @@ module.exports = {
       apiKey: process.env.VONAGE_API_KEY,
       apiSecret: process.env.VONAGE_API_SECRET,
     },
+    jwt: {
+      accesTokenSecret: process.env.ACCESS_TOKEN_SECRET,
+    },
   },
   email: {
     serverEmail: process.env.MAIL_LOGIN,
@@ -88,5 +103,4 @@ module.exports = {
     domainName: process.env.DOMAIN_NAME,
     realURL: process.env.REAL_URL,
   },
-  secret: process.env.SECRET,
 };
