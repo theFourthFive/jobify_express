@@ -25,6 +25,7 @@ var company = require("./routers/company")
 var nodemailer = require('./routers/nodemailer')
 
 
+
 /***** Database connection & Listening Requests *****/
 mongoose.Promise = global.Promise;
 
@@ -82,7 +83,7 @@ app.use(
 app.get('/', (req, res, next) => {
   res.send("hello from express")
 })
-
+app.use ("/updateprofile",worker )
 app.use("/workers", worker);
 app.use("/events" ,events)
 // app.use("/auth", auth);
@@ -91,7 +92,7 @@ app.use("/events" ,events)
 app.use("/addEvent",addEvent)
 
 app.use('/nodemailer',nodemailer)
-app.use('/company',company)
+
 
 /**** Middleware that Catch the "Wrong Endpoint" ****/
 // Catch 404 errors and forward them to error handler
