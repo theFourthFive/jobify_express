@@ -1,8 +1,8 @@
 var express = require("express");
 
 var router = express.Router()
-var {event} = require("../dbconfig")
-var {subscription}  = require("../dbconfig")
+var {event , subscription} = require("../dbconfig")
+
 var {company , subscription ,worker , sequelize}  = require("../dbconfig")
 
 
@@ -25,8 +25,36 @@ catch (err){
 }
 })
 
+router.get("/worker/history/:id", async(req,res)=>{
+
+  const id = req.params.id;
+ try {
+sequelize.query(`SELECT e.eventID,e.eventName,e.location , e.imageUri ,e.createdAt ,e.dailyPay ,c.label,c.Bussinessfield,c.phoneNumber AS cphonenumber , c.imageUrl FROM events e , companies c WHERE (e.companyCompanyId = c.companyId AND e.eventID IN ( SELECT s.eventEventID FROM subscriptions s WHERE s.workerWorkerId = ${id} ));`)
+.then((subscribedEvents)=>{res.send(subscribedEvents);}).catch (err=>console.log(err))
+
+ }
+ catch (err){
+  console.log(err,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+ }
+ })
+
 
 .post("/subscribe" , async(req,res)=>{
-   console.log("helloo");
+try{
+ const {workerId , eventID} = req.body ; 
+ const queryRes =  await  subscription.create({workerWorkerId : workerId , eventEventID : eventID , validation : "pending"})
+}
+catch (err)
+{
+  console.log(err)
+}
+})
+
+
+.delete("/unsubscribe/:user/:event" , async(req,res)=>{
+  try{const eventEventID = req.params.user
+  const workerWorkerId = req.params.event
+  console.log({eventEventID,workerWorkerId})
+  const flag = await subscription.destroy({where : {eventEventID,workerWorkerId}})}catch(err){console.log(err)}
 })
 module.exports = router

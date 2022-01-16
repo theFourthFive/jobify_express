@@ -87,8 +87,8 @@ worker.belongsToMany(event, { through: accepted_Profile });
 
 ///////////////////// subscription realation///////////////////////////////////////
 
-company.belongsToMany(worker, { through: subscription });
-worker.belongsToMany(company, { through: subscription });
+event.belongsToMany(worker, { through: subscription });
+worker.belongsToMany(event, { through: subscription });
 
 ///////////////////////// HIRING OFFER REALATION //////////////////////////////////////////
 hiringOffer.belongsTo(company);
