@@ -11,7 +11,8 @@ module.exports = {
       // that means the user provided his username & not his phone number
       loginFilter = { phoneNumber: username_or_email };
     } else {
-      loginFilter = { username: username_or_email };
+      // loginFilter = { username: username_or_email }; // not wrong
+      loginFilter = { email: username_or_email }; // delete this line after testing phase
     }
     return loginFilter;
   },

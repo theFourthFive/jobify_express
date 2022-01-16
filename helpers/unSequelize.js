@@ -44,7 +44,7 @@ module.exports = {
           if ([null, undefined].includes(response.dataValues[attribute])) {
 
             // then I delete, the nullish attribute (except for the one which equal to "availibility")
-            if(attribute !== "availibility") delete element.dataValues[attribute]
+            if(attribute !== "availibility") delete response.dataValues[attribute]
 
             // delete response.dataValues[attribute] // I commented this line, because I want to keep an eye on the "availability of the worker"
           }
