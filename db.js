@@ -6,7 +6,6 @@ sequelize = new Sequelize(database.mysql.url, {
   operatorsAlias: false,
 });
 
-
 var event = sequelize.define("event", {
   eventID: {
     type: Sequelize.DataTypes.INTEGER,
@@ -14,7 +13,7 @@ var event = sequelize.define("event", {
     autoIncrement: true,
     primaryKey: true,
   },
-  eventName : Sequelize.DataTypes.STRING,
+  eventName: Sequelize.DataTypes.STRING,
   location: Sequelize.DataTypes.STRING,
   date_time: Sequelize.DataTypes.STRING,
   nbrWaiter: Sequelize.DataTypes.STRING,
@@ -39,7 +38,7 @@ var company = sequelize.define("company", {
   Email: Sequelize.DataTypes.STRING,
   phoneNumber: Sequelize.DataTypes.INTEGER,
   imageUrl: Sequelize.DataTypes.STRING,
-  passWord: Sequelize.DataTypes.STRING,
+  password: Sequelize.DataTypes.STRING,
 });
 
 var worker = sequelize.define("worker", {
@@ -89,7 +88,6 @@ worker.belongsToMany(event, { through: accepted_Profile });
 subscription.belongsTo(event);
 subscription.belongsTo(worker);
 
-
 ///////////////////////// HIRING OFFER REALATION //////////////////////////////////////////
 hiringOffer.belongsTo(company);
 hiringOffer.belongsTo(worker);
@@ -103,15 +101,11 @@ event.belongsTo(company);
 //  sequelize.sync({alter:true})
 // worker.create({firstName :"hello " , lastName : "heh" , Email : "sasdasd" , phoneNumber : "222" , imageUrl : "asda" , CVUrl : "asdasd"})
 
-module.exports =sequelize;
-
-
+module.exports = sequelize;
 
 // company. create({Bussinessfield : "hotel" , label : "movenpick" , Email : "movenpick@gmail.com" , phoneNumber : 70999000 , imageUrl : "https://bit.ly/3zSqeek"})
 // company. create({Bussinessfield : "traiteur" , label : "signature" , Email : "sign@gmail.com" , phoneNumber : 70999000 , imageUrl : "https://bit.ly/3Fn5Ymb"})
 // company. create({Bussinessfield : "hotel" , label : "fourseasons" , Email : "fourseasons@gmail.com" , phoneNumber : 70999000 , imageUrl : "https://bit.ly/3FreS26"})
-
-
 
 // event.create({
 //   eventName: "party",
@@ -199,9 +193,11 @@ module.exports =sequelize;
 // subscription.create({validation : "pending" , eventEventID : 74, workerWorkerId : 1})
 // subscription.create({validation : "pending" , eventEventID : 75 , workerWorkerId : 1})
 
-feedback.create({rate : 5 , text : "Good worker we can count on you for futher jobs" , companyCompanyId : 38 , workerWorkerId : 10})
-feedback.create({rate : 2 , text : "we hope that you work on having better communication" , companyCompanyId : 37 , workerWorkerId : 10})
-feedback.create({rate : 3 , text : "you can do it" , companyCompanyId : 36 , workerWorkerId : 10})
-feedback.create({rate : 5 , text : "Good worker we can count on you for futher jobs" , companyCompanyId : 38 , workerWorkerId : 10})
-feedback.create({rate : 3 , text : "Good worker we can count on you for futher jobs" , companyCompanyId : 37 , workerWorkerId : 10})
-
+// prettier-ignore
+{
+  feedback.create({rate : 5 , text : "Good worker we can count on you for futher jobs" , companyCompanyId : 38 , workerWorkerId : 10})
+  feedback.create({rate : 2 , text : "we hope that you work on having better communication" , companyCompanyId : 37 , workerWorkerId : 10})
+  feedback.create({rate : 3 , text : "you can do it" , companyCompanyId : 36 , workerWorkerId : 10})
+  feedback.create({rate : 5 , text : "Good worker we can count on you for futher jobs" , companyCompanyId : 38 , workerWorkerId : 10})
+  feedback.create({rate : 3 , text : "Good worker we can count on you for futher jobs" , companyCompanyId : 37 , workerWorkerId : 10})
+}

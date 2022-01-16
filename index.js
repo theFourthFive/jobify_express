@@ -1,31 +1,21 @@
-/********************* Requires *********************/
-var express = require("express");
-var app = express();
-var cors = require("cors");
-
-var addEvent = require("./routers/addEvent");
+/*********************************************** Requires ***********************************************/
+const express = require("express");
+const app = express();
+const cors = require("cors");
 const passport = require("passport");
-
 const cookieSession = require("cookie-session");
 const mongoose = require("mongoose");
 
-/****************** Helper Functions *****************/
+/******************************************** Helper Function *******************************************/
 const { whisp, gossip, yell, ignore } = require("./helpers/whisper");
 ignore(gossip);
 
-/****************** Server Settings ******************/
-const { port, database, keys } = require("./config/settings");
+/******************************************** Server Settings *******************************************/
+const { server, database, keys } = require("./config/settings");
 const passportSetup = require("./config/passport-setup");
 ignore(passportSetup, passport);
 
-/***************** Including Routes *****************/
-const events=require("./routers/events");
-var worker = require("./routers/worker")
-var company = require("./routers/company")
-var nodemailer = require('./routers/nodemailer')
-
-
-/***** Database connection & Listening Requests *****/
+/******************************* Database connection & Listening Requests *******************************/
 mongoose.Promise = global.Promise;
 
 const Sequelize = require("sequelize");
@@ -45,8 +35,8 @@ mongoose
     (async()=>{
       try {
         await sequelize.authenticate();
-        whisp(`Sequelize is now connected to the remote MySQL database: \n${database.mysql.url} \n`);
-        app.listen(port, () => whisp(`The server is now listening on http://localhost:${port}/`));
+        whisp(`Sequelize is now connected to the MySQL database: \n${database.mysql.url} \n`);
+        app.listen(server.port, () => whisp(`The server is now listening on ${server.url}/`));
 
       } catch (error) {
         yell('Unable to connect to the database:', error);
@@ -55,7 +45,7 @@ mongoose
   })
   .catch((error) => yell("Error have been encountered while connecting to database", error));
 
-/******************** Middleware ********************/
+/********************************************** Middleware **********************************************/
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -63,6 +53,7 @@ app.use(cors());
 
 app.use((req, res, next) => {
   ignore(req);
+
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET , PUT , POST , DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type, x-requested-with");
@@ -78,46 +69,37 @@ app.use(
   })
 );
 
-/********************** Routes **********************/
-app.get('/', (req, res, next) => {
-  res.send("hello from express")
-})
+/******************************************* Including Routes *******************************************/
+const auth = require("./routers/auth-routes");
+const workers = require("./routers/workers");
+const companies = require("./routers/companies");
+const events = require("./routers/events");
 
-app.use("/workers", worker);
-app.use("/events" ,events)
-// app.use("/auth", auth);
-// app.use("/tools", tools);
-// app.use("/users", users);
-app.use("/addEvent",addEvent)
+var company = require("./routers/company");
+// var worker = require("./routers/worker");
+var nodemailer = require("./routers/nodemailer");
 
-app.use('/nodemailer',nodemailer)
-app.use('/company',company)
-
-/**** Middleware that Catch the "Wrong Endpoint" ****/
-// Catch 404 errors and forward them to error handler
-app.use((req, res, next) => {
-  
-  ignore(req, res);
-
-  const wrongEndpoint = new Error("Not found");
-  wrongEndpoint.status = 404;
-  next(wrongEndpoint);
+const addEvent = require("./routers/addEvent");
+/************************************************ Routes ************************************************/
+app.get("/", (req, res, next) => {
+  res.send("hello from express");
 });
 
-/************** Error handler function **************/
-// Error handler function
-// app.use((wrongEndpoint, req, res, next) => {
-//   ignore(req, next);
+app.use("/auth", auth);
+app.use("/workers", workers);
+app.use("/companies", companies);
+app.use("/events", events); // good !
 
-//   const error = app.get("env") === "development" ? wrongEndpoint : {};
-//   const status = wrongEndpoint.status || 500;
+app.use("/addEvent", addEvent); // ???
 
-//   // respond to client
-//   res.status(status).json({
-//     error: {
-//       message: error.message,
-//     },
-//   });
-//   // Respond to ourselves
-//   yell(err);
-// });
+app.use("/nodemailer", nodemailer); // ???
+app.use("/company", company); // ???
+
+/****************************** Middleware that Catch the "Wrong Endpoint" ******************************/
+// Catch 404 errors and forward them to error handler
+
+// prettier-ignore
+app.use("*", require("./middlewares/_404ErrorHandler").wrongEndpoint_And_404Error_Catcher);
+
+/**************************************** Error handler function ****************************************/
+app.use(require("./middlewares/_404ErrorHandler").errorHandler);

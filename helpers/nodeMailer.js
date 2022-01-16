@@ -1,21 +1,48 @@
 const nodemailer = require("nodemailer");
 const { whisp, yell, ignore } = require("./whisper");
 
+/***********************************************************************************************************
+ * _SERVER_EMAIL: mailExample.service@server.com
+ * _SERVER_PASSWORD: Password_of_mailExample.service@server.com
+ * _TESTER_EMAIL: email address of the developper on which he want to receive an email if the
+ * user did not provide his email from the form
+ *
+ * _DOMAIN_NAME: 'superWebsite.com' (only the domain, without the http://)
+ * _HOST_NAME: 'Super Website' (only the name of the website)
+/**********************************************************************************************************/
 // prettier-ignore
-const { serverEmail, serverPassword, testerEmail, domainName, hostName, realURL } = require("../config/settings").email;
+const { _SERVER_EMAIL, _SERVER_PASSWORD, _TESTER_EMAIL, _DOMAIN_NAME, _HOST_NAME } = require("../config/settings").email;
+const realURL = require("../config/settings").server.url;
+
+/****************************************** Template Initializer ******************************************
+ * _HOST_NAME: 'Super Website', only the name of the website
+ * _DOMAIN_NAME: 'SuperWebsite.com', only the domain, without the http://
+ *
+ * init_HOST_NAME: example : "Super Website"
+ * init_DOMAIN_NAME: example: "superWebsite.com"
+ * initUserEmail: if it's not provided from the front-end, it will take the email address of the tester
+ *
+ * Note: The tester will be the tester user who will receive an email test from the nodeMailer
+ *
+ * initSubject: it describe the Object of the email
+ * initText: the content of the email, but with pure text format
+ * initHTML: the content of the email, but with HTML format
+ * initMail: it initialize the Subject, and the content of the email, with Text and HTML format
+ * initMailTransporter: it specify which service to use (ex: 'gmail'), and specify the login & the password
+/**********************************************************************************************************/
 
 // prettier-ignore
-const initHostName = ( websiteName ) => websiteName ? websiteName : `"${hostName} 👻" <${serverEmail}>`
-const initDomainName = ( websiteURL ) =>
-  websiteURL ? websiteURL : domainName;
+const init_HOST_NAME = ( websiteName ) => websiteName ? websiteName : `"${_HOST_NAME} 👻" <${_SERVER_EMAIL}>`
+const init_DOMAIN_NAME = (websiteURL) =>
+  websiteURL ? websiteURL : _DOMAIN_NAME;
 
-const initUserEmail = (userEmail) => (userEmail ? userEmail : testerEmail);
+const initUserEmail = (userEmail) => (userEmail ? userEmail : _TESTER_EMAIL);
 
 // prettier-ignore
 const initSubject = ({ subject }, template) => {
   if (subject) return subject;
-  if (template === "signup") return `Welcome to ${hostName}`;
-  if (template === "forgotpassword") return `[${hostName}] Reset password instructions`;
+  if (template === "signup") return `Welcome to ${_HOST_NAME}`;
+  if (template === "forgotpassword") return `[${_HOST_NAME}] Reset password instructions`;
 
   if(template === "userbanned"){
     ignore()
@@ -29,8 +56,8 @@ const initSubject = ({ subject }, template) => {
 
 // prettier-ignore
 const initText = ({textFormat, fullName, websiteName, websiteURL, hash_link}, template) => {
-  websiteName = initHostName(websiteName)
-  websiteURL = initDomainName(websiteURL)
+  websiteName = init_HOST_NAME(websiteName)
+  websiteURL = init_DOMAIN_NAME(websiteURL)
 
   if (textFormat) return textFormat;
 
@@ -40,7 +67,7 @@ const initText = ({textFormat, fullName, websiteName, websiteURL, hash_link}, te
     To make things extra special for you, starting today, we will send you a series of exclusive emails with amazing tips and tricks to get the most out of your account.
     Get ready!
     Not sure where to start? Make sure to visit our F.A.Q section!
-    If you prefer something more personal, you can always contact our support team through live chat or at ${serverEmail}.
+    If you prefer something more personal, you can always contact our support team through live chat or at ${_SERVER_EMAIL}.
     Best,
     The ${websiteName} team.`;
   }
@@ -66,8 +93,8 @@ const initText = ({textFormat, fullName, websiteName, websiteURL, hash_link}, te
 
 // prettier-ignore
 const initHTML = ({htmlFormat, fullName, websiteName, websiteURL, hash_link}, template) => {
-  websiteName = initHostName(websiteName)
-  websiteURL = initDomainName(websiteURL)
+  websiteName = init_HOST_NAME(websiteName)
+  websiteURL = init_DOMAIN_NAME(websiteURL)
 
   if (htmlFormat) return htmlFormat;
 
@@ -77,7 +104,7 @@ const initHTML = ({htmlFormat, fullName, websiteName, websiteURL, hash_link}, te
     <p>To make things extra special for you, starting today, we will send you a series of exclusive emails with amazing tips and tricks to get the most out of your account.</p>
     <p>Get ready!</p>
     <p>Not sure where to start? Make sure to visit our F.A.Q section!</p>
-    <p>If you prefer something more personal, you can always contact our support team through live chat or at ${serverEmail}.</p>
+    <p>If you prefer something more personal, you can always contact our support team through live chat or at ${_SERVER_EMAIL}.</p>
     <p>Best,</p>
     <p>The ${websiteName} team</p>`;
   }
@@ -94,16 +121,12 @@ const initHTML = ({htmlFormat, fullName, websiteName, websiteURL, hash_link}, te
   if(template === "userbanned"){
     ignore()
   }
-
-  if(template === "itembanned"){
-    ignore()
-  }
 };
 
 // prettier-ignore
 const initMail = (params, template) => {
   return {
-    from: initHostName(params), // sender address
+    from: init_HOST_NAME(params), // sender address
     to: initUserEmail(params.email), // list of receiver(s)
     subject: initSubject(params, template), // Subject line
     text: initText(params, template), // plain text body
@@ -111,19 +134,20 @@ const initMail = (params, template) => {
   };
 };
 
-const initGmailTransporter = (user, pass) => ({
-  service: "gmail",
+const initMailTransporter = (user, pass, service) => ({
+  service,
   auth: { user, pass },
 });
 
 // prettier-ignore
 module.exports = {
   gMailer: async (params, template) => {
+    whisp("mailerParams (inside ): ",params)
     // let params = { websiteName, subject, textFormat, htmlFormat, fullName, websiteURL, hash_link };
     const newMail = initMail(params, template);
 
     // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport(initGmailTransporter(serverEmail, serverPassword));
+    let transporter = nodemailer.createTransport(initMailTransporter(_SERVER_EMAIL, _SERVER_PASSWORD, "gmail"));
 
     try {
       // send mail with defined transport object
