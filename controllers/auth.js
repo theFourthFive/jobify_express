@@ -28,6 +28,7 @@ module.exports = {
     signin: async (req, res, next) => {
       // whisp(req.body)
       const { email, password, email_or_PhoneNumber } = req.body
+      console.log("email_or_PhoneNumber: ",email_or_PhoneNumber)
       const filter = loginParser(email_or_PhoneNumber) // this function will return an object
 
       try {
@@ -42,12 +43,13 @@ module.exports = {
           if(success){
             // the password is correct
             // send back the information about the user
-            const { workerId } = unSequelize(foundWorker) // this function will remove the password & only return the dataValues attribute
-            res.status(200).json({ workerId })
+            // const { workerId } = unSequelize(foundWorker) // this function will remove the password & only return the dataValues attribute
+            const worker = unSequelize(foundWorker) // this function will remove the password & only return the dataValues attribute
+            res.status(200).json(worker)
           } else {
             // Here the password is wrong
             // send back to the user the error
-            res.status(404).json("Wrong login and password combination")
+            res.status(200).json("Wrong login and password combination")
           }
         } else {
           /************************************** Login of a Company *************************************/
@@ -71,7 +73,7 @@ module.exports = {
               } else {
                 // Here the password is wrong
                 // send back to the user the error
-                res.status(404).json("Wrong login and password combination")
+                res.status(200).json("Wrong login and password combination")
               }
             } else {
               // if (foundWorker is null) and (foundCompany is null)
@@ -80,16 +82,17 @@ module.exports = {
               // no such email registered
               // we don't inform the user that the email is not registered
               // but instead we tell him that the combination of email that he provided and the password are wrong
-              res.status(404).json("Wrong login and password combination")
+              res.status(200).json("Wrong login and password combination")
+              // res.status(401).json("Wrong login and password combination") // I couldn't this error message to the front ...
             }
           } else {
             // here, either the company tried the login process, by providing their username, or their phone number
-            res.status(400).json("If you are a company, please enter your email")
+            res.status(200).json("If you are a company, please enter your email")
           }
         }
       } catch (error) {
         yell(error)
-        res.status(500).json("(500) Internal Server Error");
+        res.status(200).json("(500) Internal Server Error");
       }
     },
 
@@ -149,6 +152,7 @@ module.exports = {
 
       // fullName: "John Doe" (firstName: "John" ... lastName: "Doe" )
       const fullName = firstName + " " + LastName
+      console.log(">>>>>>>>>>>>> fullName: ", fullName)
 
       // because I don't want to change all other variable, because it's not a class
       const email = Email
@@ -181,7 +185,7 @@ module.exports = {
           if (foundCompany !== null) {
             // then send an error message, informing "That email is already registered"
             // res.json(unSequelize(foundCompany));
-            res.status(400).json("That email is already registered");
+            res.status(200).json("That email is already registered");
           } else {
             // before we proceed to hashing the password of the company
             // we must be sure that the given email is not used by a worker
@@ -238,7 +242,7 @@ module.exports = {
               // the foundWorker !== null
               // which means, the email is registered inside the table of the worker
               // we must inform the user that the email is already registered
-              res.status(400).json("That email is already registered")
+              res.status(200).json("That email is already registered")
               /***************************************************************************************
                 Note:
                   In case of forgotting a password, and he provide us his email,
@@ -254,7 +258,7 @@ module.exports = {
           // we should only inform the user that there's an issue with a server with error code of 500
           // without specifying the issue itself of hashing the password
           yell(error);
-          res.status(500).json("(500) Internal Server Error");
+          res.status(200).json("(500) Internal Server Error");
         }
 
 
@@ -298,7 +302,7 @@ module.exports = {
               // the foundCompany !== null
               // which means, the email is registered inside the table of the Company
               // we must inform the user that the email is already registered
-              res.status(400).json("That email is already registered")
+              res.status(200).json("That email is already registered")
               /***************************************************************************************
                 Note:
                   In case of forgotting a password, and he provide us his email,
@@ -314,7 +318,7 @@ module.exports = {
           // we should only inform the user that there's an issue with a server with error code of 500
           // without specifying the issue itself of hashing the password
           yell(error);
-          res.status(500).json("(500) Internal Server Error");
+          res.status(200).json("(500) Internal Server Error");
         }
       }
 
