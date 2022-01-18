@@ -30,7 +30,7 @@ module.exports = {
       const { email, password, email_or_PhoneNumber } = req.body
       console.log("email_or_PhoneNumber: ",email_or_PhoneNumber)
       const filter = loginParser(email_or_PhoneNumber) // this function will return an object
-
+      console.log(req.body);
       try {
         /************************************** Login of a Worker **************************************/
 
