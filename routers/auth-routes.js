@@ -24,6 +24,23 @@ router.post("/forgotpassword/", AuthController.forgotPassword);
 // http://localhost:3000/auth/resetpassword/
 router.post("/resetpassword/", AuthController.executeResetPassword);
 
+/****************************************** Admins ************************************************/
+
+// http://localhost:3000/auth/admin/login
+router.post("/admins/login", AuthController.adminSignin);
+
+// http://localhost:3000/auth/admins/signup
+router.post("/admins/signup", AuthController.adminSignup); // only for adding users from postman // DISABLE THIS LINE
+
+// http://localhost:3000/auth/logout
+router.post("/admins/logout", AuthController.logout);
+
+// http://localhost:3000/auth/admin/${adminId}/changepassword
+// prettier-ignore
+router.put("/admins/:adminId/changepassword", AuthController.changeAdminPassword);
+
+/************************************* Google authentication **************************************/
+
 // auth with google
 /***********************************************************************************
     explanation: when a user click on "signin with google +"

@@ -19,6 +19,7 @@ const createToken = (id) => {
   });
 };
 
+var Admin = require("../models/Admin.js");
 const { company, worker } = require("../dbconfig.js");
 const { unSequelize } = require("../helpers/unSequelize");
 
@@ -97,8 +98,7 @@ module.exports = {
     },
 
 
-
-    // http://localhost:3000/auth/signup (Post Request)
+    // http://localhost:3000/auth/signup (POST REQUEST)
     signup: async (req, res, next) => {
       /*****************************************************
        * Achraf
@@ -321,9 +321,123 @@ module.exports = {
           res.status(200).json("(500) Internal Server Error");
         }
       }
-
     },
 
+
+    // http://localhost:3000/auth/admins/login  (POST REQUEST)
+    adminSignin: async (req, res, next) => {
+
+      // destructure the body to get specific data
+      const { email, password } = req.body
+
+      // const filter = loginParser(email_or_PhoneNumber) // this function will return an object
+
+      try {
+        /************************************** Login of an admin **************************************/
+
+        // find admin by email
+        const foundAdmin = await Admin.findOne({ email });
+
+        // compare if the password is correct
+        const success = await bcrypt.compare(password, foundAdmin.password);
+
+        // if the password is correct
+        if(success){
+
+          // we grab the data from the database without including the hashed password in the selection of the fields
+          // const foundAdmin = await Admin.findById(savedAdmin._id).select("-password") // useless in this situation
+
+          // then send to the terminal the data
+          const data = {
+            id: foundAdmin.id,
+            email: foundAdmin.email
+          }
+
+          res.status(201).json(data)
+        } else {
+          res.status(401).json("Wrong login and password combination")
+        }
+      } catch (error) {
+        yell(error)
+        res.status(200).json("(500) Internal Server Error");
+      }
+    },
+
+
+    // http://localhost:3000/auth/admins/signup      (POST REQUEST)
+    adminSignup: async (req, res, next) => {
+      // the creation of the admin will be done from postman only once, and this function will be commented from the auth-routes.js
+
+      const { email, password } = req.body;
+      const newAdmin = { email, password }
+      try {
+        let alreadyExistAdmin = await Admin.findOne({ email }).select("-password")
+
+        // check if the admin does not exist
+        if(!alreadyExistAdmin){
+
+          // then create a new Admin by hashing his password first
+          newAdmin.password = await bcrypt.hash(password, 10);
+
+          // save the new admin into a databse (mongo)
+          const savedAdmin = await Admin.create(newAdmin)
+
+          // there's no way to return back the same data with deleting the password attribute
+          const foundAdmin = await Admin.findById(savedAdmin._id).select("-password")
+
+          // send the newly created Admin to the device who asked the creation of the admin
+          res.status(201).json(foundAdmin)
+        } else {
+          res.status(401).json(alreadyExistAdmin)
+        }
+
+        const foundAdmin = await Admin.findById(savedAdmin._id).select("-password")
+        res.status(201).json(foundAdmin);
+
+      } catch (error) {
+        yell(error)
+      }
+    },
+
+
+
+    // http://localhost:3000/auth/admins/${adminId}/changepassword   (PUT Request)
+    changeAdminPassword: async (req, res, next) => {
+      const { adminId } = req.params
+      const { email, password, newPassword } = req.body;
+      const foundAdmin = await Admin.findById({ _id: adminId })
+
+      // check if the admin exist in the database
+      if(foundAdmin){
+        // the admin is found here, we must compare the password
+        try {
+          // compare the old password with the hashed one
+          const success = await bcrypt.compare(password, foundAdmin.password);
+
+          // if the password that the admin gave is correct
+          if(success){
+
+            // then hash the new password
+            const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+            // update the new password
+            const updatedAdmin = await Admin
+                                          .findByIdAndUpdate({_id: adminId}, { password: hashedPassword }, { new: true })
+                                          .select("-password")
+
+            whisp("Password changes successfuly")
+            res.status(201).json(updatedAdmin)
+          } else {
+            res.status(404).json("Wrong password")
+          }
+        } catch (error) {
+          yell(error)
+          res.status(500).json("(500) Internal Server Error")
+        }
+      } else {
+        res.status(404).json("There's no Admin with that ID inside the database")
+      }
+    },
 
 
 
@@ -349,4 +463,5 @@ module.exports = {
     changePassword: async (req, res) => {
       
     }
+    
 };
