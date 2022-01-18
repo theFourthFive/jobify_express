@@ -75,10 +75,11 @@ const workers = require("./routers/workers");
 const companies = require("./routers/companies");
 const events = require("./routers/events");
 
+// const hire = require('./routers/HiringOffer')
+
 var company = require("./routers/company");
 // var worker = require("./routers/worker");
 var nodemailer = require("./routers/nodemailer");
-
 const addEvent = require("./routers/addEvent");
 /************************************************ Routes ************************************************/
 app.get("/", (req, res, next) => {
@@ -88,6 +89,9 @@ app.get("/", (req, res, next) => {
 app.use("/auth", auth);
 app.use("/workers", workers);
 app.use("/companies", companies);
+
+// app.use("/hire" , hire)
+
 app.use("/events", events); // good !
 
 app.use("/addEvent", addEvent); // ???
