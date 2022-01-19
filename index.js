@@ -71,21 +71,24 @@ app.use(
 
 /******************************************* Including Routes *******************************************/
 const auth = require("./routers/auth-routes");
+const admins = require("./routers/admins");
 const workers = require("./routers/workers");
 const companies = require("./routers/companies");
 const events = require("./routers/events");
-const CompanyEvents = require("./routers/companyRoutes/events")
+const CompanyEvents = require("./routers/companyRoutes/events");
 var company = require("./routers/company");
 var worker = require("./routers/worker");
 var nodemailer = require("./routers/nodemailer");
 
 const addEvent = require("./routers/addEvent");
+const eventsComp = require("./routers/eventsComp");
 /************************************************ Routes ************************************************/
 app.get("/", (req, res, next) => {
   res.send("hello from express");
 });
-app.use("/companyevetns",CompanyEvents)
+app.use("/companyevetns", CompanyEvents);
 app.use("/auth", auth);
+app.use("/admins/", admins);
 app.use("/worker", worker);
 app.use("/workers", workers);
 app.use("/companies", companies);
@@ -93,6 +96,9 @@ app.use("/events", events); // good !
 app.use("/addEvent", addEvent); // ???
 app.use("/nodemailer", nodemailer); // ???
 app.use("/company", company); // ???
+app.use("/eventsComp", eventsComp); // ???
+
+
 
 
 /****************************** Middleware that Catch the "Wrong Endpoint" ******************************/
