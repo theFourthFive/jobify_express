@@ -90,9 +90,7 @@ app.use("/worker", worker);
 app.use("/workers", workers);
 app.use("/companies", companies);
 app.use("/events", events); // good !
-
 app.use("/addEvent", addEvent); // ???
-
 app.use("/nodemailer", nodemailer); // ???
 app.use("/company", company); // ???
 
