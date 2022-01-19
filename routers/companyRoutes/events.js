@@ -14,9 +14,22 @@ router.get("/events/:id" ,async (req, res) => {
     }
 });
 
-router.get("/workers" , (req , res)=>{
+router.get("/workers/:id" ,async (req , res)=>{
+try
 
-    //SELECT * FROM workers s , accepted_Profiles acc  WHERE s.workerId = acc.workerWorkerId AND acc.eventEventID = 73; 
+{   const eventid = req.params.id
+    const workers  = await sequelize.query(`SELECT s.workerId , s.firstName ,s.LastName , s.Email , s.phoneNumber 
+                                         ,s.imageUrl ,s.CVUrl ,s.availibility , s.createdAt  
+                                          FROM workers s , accepted_Profiles acc                       
+                                          WHERE s.workerId = acc.workerWorkerId 
+                                          AND acc.eventEventID = ${eventid}`)
+    res.send(workers)
+}
+catch(err)
+   {  
+       console.log(err);
+   }
+
 
 })
 module.exports = router;
