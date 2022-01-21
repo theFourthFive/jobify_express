@@ -1,7 +1,7 @@
 const { log } = require("console");
 var express = require("express");
 var router = express.Router();
-var {company ,event, subscription ,worker ,feedback,sequelize}  = require("../../dbconfig");
+var {company, accepted_Profile ,event, subscription ,worker ,feedback,sequelize}  = require("../../dbconfig");
 const { route } = require("../auth-routes");
 
 
@@ -31,6 +31,21 @@ catch(err)
 
 })
 
+router.get("/subscribers/:id" ,async (req , res)=>{
+    try
+    
+    {   const eventid = req.params.id
+        const workers  = await sequelize.query(`SELECT w.firstName , w.workerId , w.firstName , w.LastName , w.Email , w.phoneNumber, w.imageUrl ,w.CVUrl , w.availibility , w.avgRating , w.createdAt FROM workers w , subscriptions s WHERE w.workerId = s.workerWorkerId AND s.eventEventID=${eventid}`)
+        res.send(workers)
+    }
+    catch(err)
+       {  
+           console.log(err);
+       }
+    
+    
+    })
+
 router.post("/rate/:companyId/:workerId" , async (req, res) => {
  const {companyId} = req.params
  const {workerId}=req.params
@@ -43,4 +58,35 @@ const result = await feedback.create(data)
 console.log(err)
 }
 })
+
+router.post("/hire/:eventID/:workerId" , async (req, res) => {
+const {workerId} = req.params
+const {eventID}  = req.params
+console.log({workerId , eventID});
+ try{
+     await subscription.destroy({where : {workerWorkerId :workerId , eventEventID : eventID}})
+     await accepted_Profile.create({eventEventID : eventID , workerWorkerId : workerId})
+    }
+    catch(err)
+    {
+    console.log(err);
+    }
+})
+
+
+router.post("/deny/:eventID/:workerId" , async (req, res) => {
+    console.log("hello");
+    const {workerId} = req.params
+    const {eventID}  = req.params
+    console.log({workerId , eventID});
+     try{
+         await subscription.destroy({where : {workerWorkerId :workerId , eventEventID : eventID}})
+        }
+        catch(err)
+        {
+        console.log(err);
+        }
+    })
+
+
 module.exports = router;

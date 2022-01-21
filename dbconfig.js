@@ -181,7 +181,7 @@ event.belongsTo(company);
 //   imageUri: "https://bit.ly/33cxLIy",
 // });
 
-module.exports = { event, worker, subscription, company, sequelize , feedback ,hiringOffer};
+module.exports = { event, worker, subscription, company, sequelize , feedback ,hiringOffer , accepted_Profile};
 
 global.sequelize = sequelize;
 
