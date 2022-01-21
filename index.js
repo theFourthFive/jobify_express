@@ -79,7 +79,6 @@ const CompanyEvents = require("./routers/companyRoutes/events");
 var company = require("./routers/company");
 var worker = require("./routers/worker");
 var nodemailer = require("./routers/nodemailer");
-
 const addEvent = require("./routers/addEvent");
 const eventsComp = require("./routers/eventsComp");
 const authCompany = require("./routers/companyRoutes/authCompany")
@@ -93,6 +92,9 @@ app.use("/admins/", admins);
 app.use("/worker", worker);
 app.use("/workers", workers);
 app.use("/companies", companies);
+
+// app.use("/hire" , hire)
+
 app.use("/events", events); // good !
 app.use("/addEvent", addEvent); // ???
 app.use("/nodemailer", nodemailer); // ???
