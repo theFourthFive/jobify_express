@@ -7,7 +7,7 @@ var { worker } = require("../dbconfig.js");
 
 
 router.post("/signup", async (req, res) => {
-console.log(req.body);
+
   try {
     const newWorker = req.body;
     newWorker.password = await bcrypt.hash(newWorker.password, 10);
