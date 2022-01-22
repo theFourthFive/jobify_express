@@ -81,7 +81,7 @@ var worker = require("./routers/worker");
 var nodemailer = require("./routers/nodemailer");
 const addEvent = require("./routers/addEvent");
 const eventsComp = require("./routers/eventsComp");
-const authCompany = require("./routers/companyRoutes/authCompany")
+const authCompany = require("./routers/companyRoutes/authCompany");
 /************************************************ Routes ************************************************/
 app.get("/", (req, res, next) => {
   res.send("hello from express");
@@ -100,9 +100,7 @@ app.use("/addEvent", addEvent); // ???
 app.use("/nodemailer", nodemailer); // ???
 app.use("/company", company); // ???
 app.use("/eventsComp", eventsComp); // ???
-app.use("/authcompany",authCompany); // ???
-
-
+app.use("/authcompany", authCompany); // ???
 
 /****************************** Middleware that Catch the "Wrong Endpoint" ******************************/
 // Catch 404 errors and forward them to error handler

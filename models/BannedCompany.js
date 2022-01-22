@@ -13,8 +13,11 @@ const bannedCompanySchema = mongoose.Schema(
     accountInfo: {
       type: String,
     },
+    nonBannedEvents: {
+      type: String,
+    },
   },
   { versionKey: false } // to not save the __v attribute ... // Source: https://mongoosejs.com/docs/guide.html#versionKey
 );
 
-module.exports = mongoose.model("BannedEvent", bannedCompanySchema);
+module.exports = mongoose.model("BannedCompany", bannedCompanySchema);
