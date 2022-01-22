@@ -4,17 +4,20 @@ const bcrypt = require("bcrypt");
 
 const bannedEventSchema = mongoose.Schema(
   {
-    email: {
-      type: String,
+    eventID: {
+      type: Number,
       // required: [true, "Please enter an email"],
-      lowercase: true,
+      // lowercase: true,
       // validate: [isEmail, "Please enter a valid email"],
     },
-    accountInfo: {
+    eventInfo: {
+      type: String,
+    },
+    editable: {
       type: String,
     },
   },
   { versionKey: false } // to not save the __v attribute ... // Source: https://mongoosejs.com/docs/guide.html#versionKey
 );
 
-module.exports = mongoose.model("BannedWorker", bannedEventSchema);
+module.exports = mongoose.model("BannedEvent", bannedEventSchema);

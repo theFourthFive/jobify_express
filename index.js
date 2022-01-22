@@ -100,9 +100,6 @@ app.use("/nodemailer", nodemailer); // ???
 app.use("/company", company); // ???
 app.use("/eventsComp", eventsComp); // ???
 
-
-
-
 /****************************** Middleware that Catch the "Wrong Endpoint" ******************************/
 // Catch 404 errors and forward them to error handler
 

@@ -44,19 +44,39 @@ endpoint of a put request (update): // http://localhost:3000/admins/companies
 endpoint of a delete request (delete): // http://localhost:3000/admins/companies
 *******************************************************************************************************/
 // prettier-ignore
-router.route("/comapnies")
+router.route("/companies")
           .get(AdminsController.getAllCompanies)
 
 /*******************************************************************************************************
-endpoint of a get request (get): // http://localhost:3000/admins/comapnies
-endpoint of a put request (update): // http://localhost:3000/admins/comapnies
-endpoint of a delete request (delete): // http://localhost:3000/admins/comapnies
+endpoint of a get request (get): // http://localhost:3000/admins/companies
+endpoint of a put request (update): // http://localhost:3000/admins/companies
+endpoint of a delete request (delete): // http://localhost:3000/admins/companies
 *******************************************************************************************************/
 // prettier-ignore
-router.route("/comapnies/:companyId")
+router.route("/companies/:companyId")
           .get(AdminsController.getSpecificCompany)
           .put(AdminsController.updateSpecificCompany) // update informations or, to ban a specific company
           .delete(AdminsController.deleteSpecificCompany)
+
+/*******************************************************************************************************
+endpoint of a get request (get): // http://localhost:3000/admins/companies
+endpoint of a put request (update): // http://localhost:3000/admins/companies
+endpoint of a delete request (delete): // http://localhost:3000/admins/companies
+*******************************************************************************************************/
+// prettier-ignore
+router.route("/events")
+          .get(AdminsController.getAllEvents)
+
+/*******************************************************************************************************
+endpoint of a get request (get): // http://localhost:3000/admins/events
+endpoint of a put request (update): // http://localhost:3000/admins/events
+endpoint of a delete request (delete): // http://localhost:3000/admins/events
+*******************************************************************************************************/
+// prettier-ignore
+router.route("/events/:eventID")
+          .get(AdminsController.getSpecificEvent)
+          .put(AdminsController.updateSpecificEvent) // update informations or, to ban a specific company
+          .delete(AdminsController.deleteSpecificEvent)
 
 /*******************************************************************************************************
 The endpoint of a get request (get): // http://localhost:3000/admins/${adminId}/
