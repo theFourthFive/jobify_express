@@ -3,7 +3,7 @@ var express = require("express");
 var router = express.Router()
 var {event , subscription} = require("../dbconfig")
 
-var {company ,event, subscription ,worker , sequelize}  = require("../dbconfig")
+var {company,hiringOffer,accepted_Profile ,event, subscription ,worker , sequelize}  = require("../dbconfig")
 
 
 //  /events/getall..
@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
   const events = await event.findAll({});
   res.send(events);
 });
-
+console.log("hahahahahahahhahah");
 router
   .get("/worker/:id", async (req, res) => {
     const id = req.params.id;
@@ -27,6 +27,47 @@ catch (err){
 
 }
 })
+
+
+router
+  .get("/offers/:id", async (req, res) => {
+    const id = req.params.id;
+  
+    try {
+    const result = await sequelize.query(`SELECT * FROM hiringOffers h , events e , companies c WHERE h.companyCompanyId = c.companyId AND h.eventEventID = e.eventID AND h.workerWorkerId = ${id} `)
+      console.log(result);
+    res.send(result);
+}
+catch (err){
+
+}
+})
+
+router
+  .post("/offers/accept/:user/:event/:company", async(req, res) => {
+ const {company , event , user} = req.params;   
+
+try {
+  await hiringOffer.destroy({where:{companyCompanyId : company , workerWorkerId : user , eventEventID : event}}) 
+  await accepted_Profile.create({eventEventID : event , workerWorkerId : user})  
+}
+catch (err){
+
+}
+})
+
+router
+  .post("/offers/deny/:user/:event/:company", async(req, res) => {
+ const {company , event , user} = req.params;   
+
+try {
+  await hiringOffer.destroy({where:{companyCompanyId : company , workerWorkerId : user , eventEventID : event}}) 
+}
+catch (err){
+
+}
+})
+
 
 router.get("/worker/history/:id", async(req,res)=>{
 
